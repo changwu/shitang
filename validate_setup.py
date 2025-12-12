@@ -183,4 +183,51 @@ def generate_summary():
     print("\n🎯 核心功能验证:")
     print("- 文件识别: ✅ 支持consumelog/打卡明细数据/dooreventinfo")
     print("- 字段映射: ✅ 支持消费时间/打卡时间/事件时间等字段")
-    print("- 数据导入: ✅ 支持Excel
+    print("- 数据导入: ✅ 支持Excel文件批量导入")
+    print("- 容器部署: ✅ 支持Docker容器化部署")
+    
+    print("\n📁 文件结构:")
+    for root, dirs, files in os.walk('.'):
+        level = root.replace('.', '').count(os.sep)
+        indent = ' ' * 2 * level
+        print(f"{indent}{os.path.basename(root)}/")
+        subindent = ' ' * 2 * (level + 1)
+        for file in files[:5]:  # 只显示前5个文件
+            print(f"{subindent}{file}")
+        if len(files) > 5:
+            print(f"{subindent}... 还有 {len(files)-5} 个文件")
+
+def main():
+    """主验证函数"""
+    print("🚀 开始验证重构后的shitang项目...")
+    
+    # 检查项目结构
+    structure_ok = check_project_structure()
+    
+    # 检查Docker配置
+    check_docker_config()
+    
+    # 验证SQL表结构
+    sql_ok = validate_sql_schema()
+    
+    # 验证导入逻辑
+    import_ok = validate_import_logic()
+    
+    # 生成总结
+    generate_summary()
+    
+    # 最终状态
+    print("\n" + "="*60)
+    if structure_ok and sql_ok and import_ok:
+        print("🎉 验证完成！项目重构成功，可以正常使用。")
+        print("\n下一步操作:")
+        print("1. docker compose build app")
+        print("2. docker compose up -d db metabase") 
+        print("3. 将Excel文件放入 data/import/ 目录")
+        print("4. docker compose run --rm app python /app/import_data.py --verbose")
+    else:
+        print("⚠️  验证发现一些问题，请检查上述错误信息。")
+        sys.exit(1)
+
+if __name__ == "__main__":
+   
