@@ -23,5 +23,5 @@ ENV PYTHONPATH=/app
 ENV DATA_DIR=/app/data
 ENV IMPORT_DIR=import/
 
-# Default command
-# CMD ["python", "-u", "import_data.py", "--verbose"]
+# Default command - keep container running
+CMD ["tail", "-f", "/dev/null"]
